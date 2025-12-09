@@ -1,0 +1,22 @@
+# Node / frontend / common
+node_modules/
+dist/
+build/
+
+# Env & IDE
+.env
+.env.local
+.vscode/
+.idea/
+
+# macOS / misc
+.DS_Store
+*.log
+
+# Archives and large artifacts
+*.zip
+*.tar.gz
+
+# package manager logs
+npm-debug.log*
+yarn-error.log
