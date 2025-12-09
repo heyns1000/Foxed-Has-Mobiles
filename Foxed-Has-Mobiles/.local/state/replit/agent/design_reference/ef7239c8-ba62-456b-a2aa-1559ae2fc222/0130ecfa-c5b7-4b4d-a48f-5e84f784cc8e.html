@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruitful™ Global Dashboard - All Canvases & Epic Journey</title>
+    <link rel="icon" href="/favicon.ico">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Fruitful Global Dashboard - Experience all canvases and epic journey through our comprehensive platform">
+    <meta name="keywords" content="fruitful, dashboard, canvas, analytics, platform">
+    <meta property="og:title" content="Fruitful™ Global Dashboard">
+    <meta property="og:description" content="All Canvases & Epic Journey - Comprehensive platform experience">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'fruitful-green': '#00e393',
+                        'fruitful-blue': '#007bff',
+                        'dark-bg': '#0a0a0d',
+                        'card-dark': '#1c1c21',
+                        'hyper-purple': '#6a0dad',
+                        'hyper-bg': '#0d0d1a'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(0, 227, 147, 0.3); }
+            to { box-shadow: 0 0 30px rgba(0, 227, 147, 0.6); }
+        }
+        
+        @keyframes pulseBG {
+            0%, 100% { background: radial-gradient(circle at center, #f9fafb, #e0e7ff); }
+            50% { background: radial-gradient(circle at center, #e0e7ff, #c7d2fe); }
+        }
+        
+        /* Theme Variables */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f8f8;
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --text-muted: #666666;
+            --border-color: #e0e0e0;
+            --card-bg: #ffffff;
+            --accent-color: #007bff;
+            --success-color: #00e393;
+        }
+        
+        [data-theme="dark"] {
+            --bg-primary: #121212;
+            --bg-secondary: #1c1c1c;
+            --text-primary: #e0e0e0;
+            --text-secondary: #cccccc;
+            --text-muted: #aaaaaa;
+            --border-color: #444444;
+            --card-bg: #1c1c1c;
+            --accent-color: #4a90e2;
+            --success-color: #00e393;
+        }
+        
+        [data-theme="hyper"] {
+            --bg-primary: #0d0d1a;
+            --bg-secondary: #1a1a33;
+            --text-primary: #c0f0ff;
+            --text-secondary: #88ccee;
+            --text-muted: #6699cc;
+            --border-color: #3a1a5a;
+            --card-bg: #1a1a33;
+            --accent-color: #6a0dad;
+            --success-color: #ff6666;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-transition * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        [data-theme="dark"] .glass-effect {
+            background: rgba(28, 28, 33, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        [data-theme="hyper"] .glass-effect {
+            background: rgba(26, 26, 51, 0.8);
+            border: 1px solid rgba(106, 13, 173, 0.3);
+        }
+        
+        .canvas-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .interactive-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .content-layer {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Loading States */
+        .loading-skeleton {
+            background: linear-gradient(90deg, var(--bg-secondary) 25%, transparent 50%, var(--bg-secondary) 75%);
+            background-size: 200% 100%;
+            animation: loading-shimmer 1.5s infinite;
+        }
+        
+        @keyframes loading-shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--success-color);
+        }
+    </style>
+</head>
+
+<body class="theme-transition" data-theme="light">
+    <!-- @COMPONENT: StickyHeader -->
+    <header class="sticky top-0 z-50 glass-effect">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <!-- @COMPONENT: LogoGroup -->
+                <div class="flex items-center space-x-3">
+                    <a href="#" class="text-2xl font-black text-white hover:text-gray-300 transition-colors">
+                        Fruitful™
+                    </a>
+                    <span class="text-gray-400 text-xl">|</span>
+                    <a href="#" class="text-2xl font-bold text-gray-300 hover:text-white transition-colors">
+                        Banimal
+                    </a>
+                </div>
+                <!-- @END_COMPONENT: LogoGroup -->
+                
+                <!-- @COMPONENT: Navigation -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#dashboard" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Dashboard</a>
+                    <a href="#canvases" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Canvases</a>
+                    <a href="#analytics" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Analytics</a>
+                    <a href="#journey" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Epic Journey</a>
+                </nav>
+                <!-- @END_COMPONENT: Navigation -->
+                
+                <!-- @COMPONENT: ThemeControls -->
+                <div class="flex items-center space-x-3">
+                    <div class="theme-switcher flex bg-gray-800 rounded-lg p-1">
+                        <button onclick="setTheme('light')" class="theme-btn px-3 py-1 rounded text-xs font-medium transition-all" data-theme="light">
+                            <i class="fas fa-sun"></i>
+                        </button>
+                        <button onclick="setTheme('dark')" class="theme-btn px-3 py-1 rounded text-xs font-medium transition-all" data-theme="dark">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <button onclick="setTheme('hyper')" class="theme-btn px-3 py-1 rounded text-xs font-medium transition-all" data-theme="hyper">
+                            <i class="fas fa-bolt"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button class="md:hidden text-gray-300 hover:text-white" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+                <!-- @END_COMPONENT: ThemeControls -->
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-gray-900 border-t border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#dashboard" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
+                <a href="#canvases" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Canvases</a>
+                <a href="#analytics" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Analytics</a>
+                <a href="#journey" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Epic Journey</a>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: StickyHeader -->
+
+    <main class="min-h-screen">
+        <!-- @COMPONENT: HeroSection -->
+        <section id="dashboard" class="canvas-container relative min-h-screen flex items-center justify-center" style="background: var(--bg-primary);">
+            <canvas id="heroCanvas" class="interactive-canvas"></canvas>
+            
+            <div class="content-layer max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="animate-float">
+                    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black mb-6" style="color: var(--text-primary);">
+                        Global Dashboard
+                    </h1>
+                    <p class="text-xl sm:text-2xl mb-4 font-medium" style="color: var(--accent-color);">
+                        All Canvases & Epic Journey Experience
+                    </p>
+                    <p class="text-lg sm:text-xl mb-12 max-w-3xl mx-auto" style="color: var(--text-secondary);">
+                        Explore interactive canvases, analyze data insights, and embark on your epic journey through our comprehensive platform ecosystem.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <button class="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-bold text-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                            <i class="fas fa-rocket mr-2"></i>
+                            Launch Dashboard
+                        </button>
+                        <button class="px-8 py-4 border-2 border-current rounded-full font-bold text-lg hover:bg-current hover:text-white transition-all duration-300" style="color: var(--accent-color);">
+                            <i class="fas fa-play mr-2"></i>
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: HeroSection -->
+
+        <!-- @COMPONENT: CanvasesSection -->
+        <section id="canvases" class="py-20" style="background: var(--bg-secondary);">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl sm:text-5xl font-black mb-6" style="color: var(--text-primary);">
+                        Interactive Canvases
+                    </h2>
+                    <p class="text-xl max-w-3xl mx-auto" style="color: var(--text-muted);">
+                        Discover our collection of interactive canvases designed to enhance your workflow and provide immersive experiences.
+                    </p>
+                </div>
+                
+                <!-- @MAP: canvases.map(canvas => ( -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="group canvas-card p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                        <div class="canvas-preview h-48 rounded-xl mb-6 relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <canvas class="canvas-mini absolute inset-0 w-full h-full" data-canvas="pulse"></canvas>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <i class="fas fa-wave-square text-4xl text-white opacity-80"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3" style="color: var(--text-primary);">Pulse Canvas</h3>
+                        <p class="mb-4" style="color: var(--text-muted);">Interactive pulse visualization with real-time data streaming and dynamic animations.</p>
+                        <button class="w-full py-3 rounded-lg font-semibold transition-all duration-300" style="background: var(--accent-color); color: white;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            Explore Canvas
+                        </button>
+                    </div>
+                    
+                    <div class="group canvas-card p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                        <div class="canvas-preview h-48 rounded-xl mb-6 relative overflow-hidden" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <canvas class="canvas-mini absolute inset-0 w-full h-full" data-canvas="particles"></canvas>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <i class="fas fa-atom text-4xl text-white opacity-80"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3" style="color: var(--text-primary);">Particle System</h3>
+                        <p class="mb-4" style="color: var(--text-muted);">Advanced particle physics simulation with customizable parameters and effects.</p>
+                        <button class="w-full py-3 rounded-lg font-semibold transition-all duration-300" style="background: var(--accent-color); color: white;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            Explore Canvas
+                        </button>
+                    </div>
+                    
+                    <div class="group canvas-card p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                        <div class="canvas-preview h-48 rounded-xl mb-6 relative overflow-hidden" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <canvas class="canvas-mini absolute inset-0 w-full h-full" data-canvas="network"></canvas>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <i class="fas fa-project-diagram text-4xl text-white opacity-80"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3" style="color: var(--text-primary);">Network Graph</h3>
+                        <p class="mb-4" style="color: var(--text-muted);">Dynamic network visualization with interactive nodes and connection mapping.</p>
+                        <button class="w-full py-3 rounded-lg font-semibold transition-all duration-300" style="background: var(--accent-color); color: white;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                            Explore Canvas
+                        </button>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </section>
+        <!-- @END_COMPONENT: CanvasesSection -->
+
+        <!-- @COMPONENT: AnalyticsSection -->
+        <section id="analytics" class="py-20" style="background: var(--bg-primary);">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl sm:text-5xl font-black mb-6" style="color: var(--text-primary);">
+                        Real-time Analytics
+                    </h2>
+                    <p class="text-xl max-w-3xl mx-auto" style="color: var(--text-muted);">
+                        Monitor performance metrics, user engagement, and system health across all platform components.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    <!-- @MAP: metrics.map(metric => ( -->
+                    <div class="metric-card p-6 rounded-xl shadow-lg" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: var(--success-color);">
+                                <i class="fas fa-users text-white text-xl"></i>
+                            </div>
+                            <span class="text-sm font-medium" style="color: var(--success-color);">+12.5%</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1" style="color: var(--text-primary);" data-bind="metrics.activeUsers">24,532</h3>
+                        <p style="color: var(--text-muted);">Active Users</p>
+                    </div>
+                    
+                    <div class="metric-card p-6 rounded-xl shadow-lg" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: var(--accent-color);">
+                                <i class="fas fa-chart-line text-white text-xl"></i>
+                            </div>
+                            <span class="text-sm font-medium" style="color: var(--success-color);">+8.2%</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1" style="color: var(--text-primary);" data-bind="metrics.engagement">89.4%</h3>
+                        <p style="color: var(--text-muted);">Engagement Rate</p>
+                    </div>
+                    
+                    <div class="metric-card p-6 rounded-xl shadow-lg" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: var(--success-color);">
+                                <i class="fas fa-palette text-white text-xl"></i>
+                            </div>
+                            <span class="text-sm font-medium" style="color: var(--success-color);">+15.7%</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1" style="color: var(--text-primary);" data-bind="metrics.canvasViews">142,890</h3>
+                        <p style="color: var(--text-muted);">Canvas Views</p>
+                    </div>
+                    
+                    <div class="metric-card p-6 rounded-xl shadow-lg" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: var(--accent-color);">
+                                <i class="fas fa-tachometer-alt text-white text-xl"></i>
+                            </div>
+                            <span class="text-sm font-medium" style="color: var(--success-color);">+3.1%</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-1" style="color: var(--text-primary);" data-bind="metrics.performance">99.8%</h3>
+                        <p style="color: var(--text-muted);">System Uptime</p>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+                
+                <!-- Chart Container -->
+                <div class="rounded-2xl shadow-lg p-8" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                    <h3 class="text-2xl font-bold mb-6" style="color: var(--text-primary);">Performance Overview</h3>
+                    <div class="h-64 flex items-center justify-center" style="background: var(--bg-secondary); border-radius: 12px;">
+                        <div class="text-center" style="color: var(--text-muted);">
+                            <i class="fas fa-chart-area text-4xl mb-4" style="color: var(--accent-color);"></i>
+                            <p class="text-lg font-medium">Interactive Chart Component</p>
+                            <p class="text-sm">Real-time data visualization would be implemented here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: AnalyticsSection -->
+
+        <!-- @COMPONENT: EpicJourneySection -->
+        <section id="journey" class="py-20 relative overflow-hidden" style="background: var(--bg-secondary);">
+            <canvas id="journeyCanvas" class="interactive-canvas"></canvas>
+            
+            <div class="content-layer max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl sm:text-5xl font-black mb-6" style="color: var(--text-primary);">
+                        Epic Journey
+                    </h2>
+                    <p class="text-xl max-w-3xl mx-auto" style="color: var(--text-muted);">
+                        Follow your progression through milestones, achievements, and transformative experiences across the platform.
+                    </p>
+                </div>
+                
+                <!-- Journey Timeline -->
+                <div class="journey-timeline relative">
+                    <!-- @MAP: journeySteps.map((step, index) => ( -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 mb-12">
+                        <div class="journey-step flex-shrink-0 w-24 h-24 rounded-full flex items-center justify-center font-bold text-xl text-white relative" style="background: var(--accent-color);">
+                            <span>01</span>
+                            <div class="absolute -inset-2 rounded-full border-2 border-current opacity-30 animate-pulse-slow"></div>
+                        </div>
+                        <div class="journey-content flex-grow p-6 rounded-2xl shadow-lg" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                            <h3 class="text-2xl font-bold mb-3" style="color: var(--text-primary);">Platform Onboarding</h3>
+                            <p class="mb-4" style="color: var(--text-muted);">Complete your initial setup and explore core features to get started on your journey.</p>
+                            <div class="flex items-center gap-4">
+                                <div class="progress-bar w-48 h-2 rounded-full" style="background: var(--bg-secondary);">
+                                    <div class="h-full rounded-full" style="background: var(--success-color); width: 100%;"></div>
+                                </div>
+                                <span class="text-sm font-medium" style="color: var(--success-color);">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row items-center gap-8 mb-12">
+                        <div class="journey-step flex-shrink-0 w-24 h-24 rounded-full flex items-center justify-center font-bold text-xl text-white relative" style="background: var(--success-color);">
+                            <span>02</span>
+                            <div class="absolute -inset-2 rounded-full border-2 border-current opacity-30 animate-pulse-slow"></div>
+                        </div>
+                        <div class="journey-content flex-grow p-6 rounded-2xl shadow-lg" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                            <h3 class="text-2xl font-bold mb-3" style="color: var(--text-primary);">Canvas Exploration</h3>
+                            <p class="mb-4" style="color: var(--text-muted);">Discover and interact with various canvas types to understand their capabilities and use cases.</p>
+                            <div class="flex items-center gap-4">
+                                <div class="progress-bar w-48 h-2 rounded-full" style="background: var(--bg-secondary);">
+                                    <div class="h-full rounded-full" style="background: var(--success-color); width: 75%;"></div>
+                                </div>
+                                <span class="text-sm font-medium" style="color: var(--accent-color);">In Progress</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row items-center gap-8 mb-12">
+                        <div class="journey-step flex-shrink-0 w-24 h-24 rounded-full flex items-center justify-center font-bold text-xl relative" style="background: var(--bg-secondary); color: var(--text-muted); border: 2px dashed var(--border-color);">
+                            <span>03</span>
+                        </div>
+                        <div class="journey-content flex-grow p-6 rounded-2xl shadow-lg opacity-70" style="background: var(--card-bg); border: 1px solid var(--border-color);">
+                            <h3 class="text-2xl font-bold mb-3" style="color: var(--text-primary);">Advanced Analytics</h3>
+                            <p class="mb-4" style="color: var(--text-muted);">Unlock advanced analytics features and create custom dashboards for deeper insights.</p>
+                            <div class="flex items-center gap-4">
+                                <div class="progress-bar w-48 h-2 rounded-full" style="background: var(--bg-secondary);">
+                                    <div class="h-full rounded-full" style="background: var(--border-color); width: 0%;"></div>
+                                </div>
+                                <span class="text-sm font-medium" style="color: var(--text-muted);">Locked</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+                
+                <!-- Journey CTA -->
+                <div class="text-center mt-16">
+                    <button class="px-12 py-4 bg-gradient-to-r text-white rounded-full font-bold text-lg hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl" style="background: linear-gradient(135deg, var(--accent-color), var(--success-color));">
+                        <i class="fas fa-map-marked-alt mr-3"></i>
+                        Continue Your Journey
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: EpicJourneySection -->
+
+        <!-- @COMPONENT: FooterSection -->
+        <footer class="py-16" style="background: var(--card-bg); border-top: 1px solid var(--border-color);">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="col-span-1 md:col-span-2">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <span class="text-3xl font-black" style="color: var(--text-primary);">Fruitful™</span>
+                            <span class="text-gray-400 text-2xl">|</span>
+                            <span class="text-2xl font-bold" style="color: var(--text-secondary);">Banimal</span>
+                        </div>
+                        <p class="text-lg mb-6 max-w-md" style="color: var(--text-muted);">
+                            Empowering innovation through interactive canvases and comprehensive analytics platforms.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center transition-colors" style="background: var(--accent-color); color: white;">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center transition-colors" style="background: var(--accent-color); color: white;">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-lg flex items-center justify-center transition-colors" style="background: var(--accent-color); color: white;">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-4" style="color: var(--text-primary);">Platform</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:underline transition-colors" style="color: var(--text-muted);">Dashboard</a></li>
+                            <li><a href="#" class="hover:underline transition-colors" style="color: var(--text-muted);">Canvases</a></li>
+                            <li><a href="#" class="hover:underline transition-colors" style="color: var(--text-muted);">Analytics</a></li>
+                            <li><a href="#" class="hover:underline transition-colors" style="color: var(--text-muted);">API</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-4" style="color: var(--text-primary);">Support</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:underline transition-colors" style="color: var(--text-muted);">Documentation</a></li>
+                            <li><a href="#" class="hover:underline transition-colors" style="color: var(--text-muted);">Help Center</a></li>
+                            <li><a href="#" class="hover:underline transition-colors" style="color: var(--text-muted);">Contact</a></li>
+                            <li><a href="#" class="hover:underline transition-colors" style="color: var(--text-muted);">Status</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t mt-12 pt-8 text-center" style="border-color: var(--border-color);">
+                    <p style="color: var(--text-muted);">
+                        © 2024 Fruitful™ & Banimal. All rights reserved. | 
+                        <a href="#" class="hover:underline" style="color: var(--accent-color);">Privacy Policy</a> | 
+                        <a href="#" class="hover:underline" style="color: var(--accent-color);">Terms of Service</a>
+                    </p>
+                </div>
+            </div>
+        </footer>
+        <!-- @END_COMPONENT: FooterSection -->
+    </main>
+
+    <script>
+        // TODO: Implement business logic, API calls, and state management
+        
+        (function() {
+            // Theme Management
+            function setTheme(theme) {
+                document.body.setAttribute('data-theme', theme);
+                localStorage.setItem('preferred-theme', theme);
+                updateThemeButtons(theme);
+            }
+            
+            function updateThemeButtons(activeTheme) {
+                document.querySelectorAll('.theme-btn').forEach(btn => {
+                    btn.classList.remove('bg-white', 'text-gray-900');
+                    btn.classList.add('text-gray-400');
+                    
+                    if (btn.getAttribute('data-theme') === activeTheme) {
+                        btn.classList.add('bg-white', 'text-gray-900');
+                        btn.classList.remove('text-gray-400');
+                    }
+                });
+            }
+            
+            // Mobile Menu Toggle
+            function toggleMobileMenu() {
+                const menu = document.getElementById('mobileMenu');
+                menu.classList.toggle('hidden');
+            }
+            
+            // Canvas Animations
+            function initCanvasAnimations() {
+                const heroCanvas = document.getElementById('heroCanvas');
+                const journeyCanvas = document.getElementById('journeyCanvas');
+                
+                if (heroCanvas) {
+                    const ctx = heroCanvas.getContext('2d');
+                    heroCanvas.width = heroCanvas.offsetWidth;
+                    heroCanvas.height = heroCanvas.offsetHeight;
+                    
+                    // Simple particle animation for hero
+                    const particles = [];
+                    for (let i = 0; i < 50; i++) {
+                        particles.push({
+                            x: Math.random() * heroCanvas.width,
+                            y: Math.random() * heroCanvas.height,
+                            vx: (Math.random() - 0.5) * 2,
+                            vy: (Math.random() - 0.5) * 2,
+                            size: Math.random() * 3 + 1
+                        });
+                    }
+                    
+                    function animateHero() {
+                        ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+                        
+                        particles.forEach(particle => {
+                            particle.x += particle.vx;
+                            particle.y += particle.vy;
+                            
+                            if (particle.x < 0 || particle.x > heroCanvas.width) particle.vx *= -1;
+                            if (particle.y < 0 || particle.y > heroCanvas.height) particle.vy *= -1;
+                            
+                            ctx.beginPath();
+                            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                            ctx.fillStyle = 'rgba(0, 227, 147, 0.3)';
+                            ctx.fill();
+                        });
+                        
+                        requestAnimationFrame(animateHero);
+                    }
+                    
+                    animateHero();
+                }
+                
+                // Mini canvas animations for canvas cards
+                document.querySelectorAll('.canvas-mini').forEach(canvas => {
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = canvas.offsetHeight;
+                    
+                    const type = canvas.getAttribute('data-canvas');
+                    
+                    if (type === 'pulse') {
+                        let time = 0;
+                        function animatePulse() {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            
+                            const centerX = canvas.width / 2;
+                            const centerY = canvas.height / 2;
+                            const radius = Math.sin(time) * 20 + 30;
+                            
+                            ctx.beginPath();
+                            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                            ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+                            ctx.lineWidth = 3;
+                            ctx.stroke();
+                            
+                            time += 0.1;
+                            requestAnimationFrame(animatePulse);
+                        }
+                        animatePulse();
+                    }
+                });
+            }
+            
+            // Performance Monitoring
+            function initPerformanceMonitoring() {
+                // TODO: Implement real performance monitoring
+                console.log('Performance monitoring initialized');
+            }
+            
+            // Error Handling
+            function initErrorHandling() {
+                window.addEventListener('error', function(e) {
+                    console.error('Global error:', e.error);
+                    // TODO: Implement error reporting
+                });
+            }
+            
+            // Initialize Everything
+            function init() {
+                // Load saved theme
+                const savedTheme = localStorage.getItem('preferred-theme') || 'light';
+                setTheme(savedTheme);
+                
+                // Initialize components
+                initCanvasAnimations();
+                initPerformanceMonitoring();
+                initErrorHandling();
+                
+                // Handle window resize
+                window.addEventListener('resize', function() {
+                    // TODO: Implement responsive canvas resizing
+                });
+                
+                console.log('Fruitful Global Dashboard initialized');
+            }
+            
+            // Expose functions globally
+            window.setTheme = setTheme;
+            window.toggleMobileMenu = toggleMobileMenu;
+            
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        })();
+    </script>
+</body>
+</html>

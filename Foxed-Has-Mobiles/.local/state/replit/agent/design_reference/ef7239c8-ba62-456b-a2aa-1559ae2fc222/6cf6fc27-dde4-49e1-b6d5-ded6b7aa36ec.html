@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foxed Has Mobiles™ - Design Competition Dashboard | FAA.ZONE</title>
+    <link rel="icon" href="/favicon.ico">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'competition-blue': '#0071e3',
+                        'success-green': '#00e393',
+                        'action-blue': '#007bff',
+                        'accent-blue': '#4A90E2',
+                        'dark-header': '#0a0a0d',
+                        'golden-highlight': '#FFD700'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --competition-primary: #0071e3;
+            --success-green: #00e393;
+            --dark-header: #0a0a0d;
+            --golden-highlight: #FFD700;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f9fafb 50%, #e0f2f7 100%);
+        }
+        
+        .competition-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .competition-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-left-color: var(--competition-primary);
+        }
+        
+        .price-card {
+            transition: all 0.3s ease;
+        }
+        
+        .price-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,113,227,0.15);
+        }
+        
+        .noodle-path {
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: drawPath 8s ease-in-out infinite;
+        }
+        
+        @keyframes drawPath {
+            0%, 20% { stroke-dashoffset: 2000; }
+            80%, 100% { stroke-dashoffset: 0; }
+        }
+        
+        .floating-emoji {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pulse-bg {
+            animation: pulse-bg 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-bg {
+            0%, 100% { background-color: rgba(224, 231, 255, 0.3); }
+            50% { background-color: rgba(224, 242, 247, 0.5); }
+        }
+        
+        .sticky-nav {
+            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 13, 0.95);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+    
+    <!-- @COMPONENT: StickyHeader [navigation, branding] -->
+    <header class="sticky top-0 z-50 sticky-nav border-b border-gray-800">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <a href="#hero" class="text-2xl font-bold text-white hover:text-gray-300 transition-colors">
+                        Fruitful™
+                    </a>
+                    <span class="text-gray-400 text-xl">|</span>
+                    <a href="#hero" class="text-xl font-semibold text-gray-300 hover:text-white transition-colors">
+                        Banimal
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#competitions" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        Competitions
+                    </a>
+                    <a href="#products" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        Products
+                    </a>
+                    <a href="#journey" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                        Journey
+                    </a>
+                    <a href="#rules" class="bg-competition-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-blue-700 transition-colors">
+                        Rules
+                    </a>
+                </div>
+                
+                <button class="md:hidden text-white">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <!-- @END_COMPONENT: StickyHeader -->
+
+    <main>
+        <!-- @COMPONENT: HeroSection [main title, fox branding, call-to-action] -->
+        <section id="hero" class="hero-gradient min-h-screen flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 pulse-bg"></div>
+            
+            <!-- Canvas background for ant routes -->
+            <canvas id="ant-route-canvas" class="absolute inset-0 pointer-events-none opacity-20"></canvas>
+            
+            <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+                <div class="floating-emoji text-8xl mb-8">🦊</div>
+                
+                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black text-black mb-6 leading-tight">
+                    Foxed Has Mobiles™
+                </h1>
+                
+                <p class="text-2xl sm:text-3xl text-action-blue font-medium italic mb-8">
+                    "The fox doesn't speak — it routes."
+                </p>
+                
+                <p class="text-xl sm:text-2xl text-gray-700 mb-12 max-w-3xl mx-auto">
+                    "Not what it is — what it means."<br>
+                    Master Competition Suite for Creative Excellence
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="#competitions" class="bg-competition-blue text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg">
+                        <i class="fas fa-trophy mr-2"></i>
+                        Enter Competitions
+                    </a>
+                    <a href="#products" class="bg-white text-competition-blue border-2 border-competition-blue px-8 py-4 rounded-full text-lg font-bold hover:bg-competition-blue hover:text-white transition-all">
+                        <i class="fas fa-shopping-cart mr-2"></i>
+                        View Products
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: HeroSection -->
+
+        <!-- @COMPONENT: CompetitionSuite [master competition categories, requirements] -->
+        <section id="competitions" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+                        📜 Master Competition Suite
+                    </h2>
+                    
+                    <div class="max-w-4xl mx-auto space-y-3 text-lg text-gray-600 mb-12">
+                        <p><strong>Launched By:</strong> Heyns Schoeman & Baobab Whisperer Protocols</p>
+                        <p><strong>Governance:</strong> FAA Interbrand + Yield Design Council</p>
+                        <p><strong>Archive:</strong> Vault Zero + Seed Satellite Nodes</p>
+                        <p><strong>Protocol Base:</strong> Atom-Level Design & Interbrand Symbology</p>
+                    </div>
+                </div>
+
+                <!-- Competition Categories Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                    <!-- Competition 1: Foxed Has Mobiles -->
+                    <div class="competition-card bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                        <!-- Creative design competition showcase -->
+                        <img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400" alt="Creative design competition showcase" class="w-full h-48 object-cover rounded-xl mb-6" />
+                        
+                        <div class="text-4xl mb-4">🦊</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">1. Foxed Has Mobiles™</h3>
+                        <p class="text-sm text-competition-blue font-semibold mb-3">The 1/1 Apparel Oracle</p>
+                        <p class="text-gray-600 mb-6">
+                            Wearable interpretations of "Foxed Has Mobiles™". Include the phrase, embed atom-level details like hidden codes, GPS, seeds. One-of-one designs only.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Prize Pool</span>
+                            <span class="text-lg font-bold text-success-green">R 50,000</span>
+                        </div>
+                    </div>
+
+                    <!-- Competition 2: Olympic Threads -->
+                    <div class="competition-card bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                        <!-- Olympic threads athletic wear -->
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400" alt="Olympic threads athletic wear design" class="w-full h-48 object-cover rounded-xl mb-6" />
+                        
+                        <div class="text-4xl mb-4">🍉</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">2. Mr Fruitful™'s Olympic Threads</h3>
+                        <p class="text-sm text-competition-blue font-semibold mb-3">Athletic Performance Gear</p>
+                        <p class="text-gray-600 mb-6">
+                            Design athlete gear for Crate Dance Olympics™. Must include hidden Baobab or Snotneus symbols. Focus: fruit, fire, function.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Prize Pool</span>
+                            <span class="text-lg font-bold text-success-green">R 35,000</span>
+                        </div>
+                    </div>
+
+                    <!-- Competition 3: Brand Identity -->
+                    <div class="competition-card bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                        <!-- Brand identity design logos -->
+                        <img src="https://images.unsplash.com/photo-1559028006-448665bd7c7f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400" alt="Brand identity design logos showcase" class="w-full h-48 object-cover rounded-xl mb-6" />
+                        
+                        <div class="text-4xl mb-4">📦</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">3. Water the Seed™</h3>
+                        <p class="text-sm text-competition-blue font-semibold mb-3">Brandborn Creations</p>
+                        <p class="text-gray-600 mb-6">
+                            Create logos, frames, packaging for any of 139+ FAA brands. Any medium accepted — even painted dirt.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Prize Pool</span>
+                            <span class="text-lg font-bold text-success-green">R 40,000</span>
+                        </div>
+                    </div>
+
+                    <!-- Competition 4: Chaos Cartography -->
+                    <div class="competition-card bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                        <!-- Creative design competition showcase for chaos -->
+                        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400" alt="Creative chaos design competition" class="w-full h-48 object-cover rounded-xl mb-6" />
+                        
+                        <div class="text-4xl mb-4">🧬</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">4. Playing with the Seed™</h3>
+                        <p class="text-sm text-competition-blue font-semibold mb-3">Chaos Cartography</p>
+                        <p class="text-gray-600 mb-6">
+                            Submit memes, glitchwear, absurdist artifacts representing brand collapse into new culture.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Prize Pool</span>
+                            <span class="text-lg font-bold text-success-green">R 25,000</span>
+                        </div>
+                    </div>
+
+                    <!-- Competition 5: Stage Design -->
+                    <div class="competition-card bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                        <!-- Creative design competition showcase for stage -->
+                        <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400" alt="Stage and event design showcase" class="w-full h-48 object-cover rounded-xl mb-6" />
+                        
+                        <div class="text-4xl mb-4">🌍</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">5. Crate Dance Showcase™</h3>
+                        <p class="text-sm text-competition-blue font-semibold mb-3">Stage & Nation Design</p>
+                        <p class="text-gray-600 mb-6">
+                            Stage and nation layouts made from crates. 2D / 3D blueprints. Cosmic bridges welcome.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Prize Pool</span>
+                            <span class="text-lg font-bold text-success-green">R 30,000</span>
+                        </div>
+                    </div>
+
+                    <!-- Competition 6: University Identity -->
+                    <div class="competition-card bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                        <!-- Brand identity design logos for university -->
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400" alt="University identity brand design" class="w-full h-48 object-cover rounded-xl mb-6" />
+                        
+                        <div class="text-4xl mb-4">🎓</div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">6. FAA University Identity</h3>
+                        <p class="text-sm text-competition-blue font-semibold mb-3">Academic Brand Deck</p>
+                        <p class="text-gray-600 mb-6">
+                            Create FAA University student identity assets: cards, robes, stamps, crests with Baobab + Compliance Seal + Snotneus Welcome.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Prize Pool</span>
+                            <span class="text-lg font-bold text-success-green">R 45,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <a href="#rules" class="bg-golden-highlight text-black px-8 py-4 rounded-full text-lg font-bold hover:bg-yellow-500 transition-all shadow-lg">
+                        <i class="fas fa-gavel mr-2"></i>
+                        View Challenge Rules
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: CompetitionSuite -->
+
+        <!-- @COMPONENT: ProductPricing [FAA.ZONE packages, currency conversion] -->
+        <section id="products" class="py-20 bg-gray-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <div class="flex items-center justify-center gap-3 mb-8">
+                        <span class="text-5xl">🦍</span>
+                        <h2 class="text-4xl sm:text-5xl font-bold text-gray-900">FAA.ZONE™</h2>
+                    </div>
+                    
+                    <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                        Choose the package that best fits your creative needs and proceed to secure checkout.
+                    </p>
+
+                    <!-- Currency Selector -->
+                    <div class="inline-flex items-center gap-4 bg-white px-6 py-3 rounded-xl shadow-md border border-gray-200">
+                        <label for="currency-select" class="text-gray-700 font-medium">Display prices in:</label>
+                        <select id="currency-select" class="px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-800 font-medium" data-implementation="Should update all price displays">
+                            <option value="ZAR" data-symbol="R">ZAR (R)</option>
+                            <option value="USD" data-symbol="$">USD ($)</option>
+                            <option value="EUR" data-symbol="€">EUR (€)</option>
+                            <option value="GBP" data-symbol="£">GBP (£)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Pricing Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Starter Package -->
+                    <div class="price-card bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Starter Package</h3>
+                            <p class="text-gray-600 mb-6">Ideal for individuals and small teams beginning their digital journey.</p>
+                            
+                            <div class="text-4xl font-bold text-competition-blue mb-2">
+                                <span data-bind="pricing.starter.symbol">R</span>
+                                <span data-bind="pricing.starter.amount">199.00</span>
+                            </div>
+                            <p class="text-gray-500">/ month</p>
+                        </div>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>Basic API Access</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>Standard Analytics Dashboard</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>Community Support</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>Up to 5 Users</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-competition-blue text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-colors" data-event="click:handleSubscription" data-implementation="Should process subscription with payment gateway">
+                            Subscribe Now
+                        </button>
+                    </div>
+
+                    <!-- Business Package -->
+                    <div class="price-card bg-white rounded-2xl p-8 shadow-xl border-2 border-competition-blue relative">
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                            <span class="bg-competition-blue text-white px-4 py-2 rounded-full text-sm font-semibold">Most Popular</span>
+                        </div>
+                        
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Business Package</h3>
+                            <p class="text-gray-600 mb-6">Comprehensive tools for growing businesses and advanced operations.</p>
+                            
+                            <div class="text-4xl font-bold text-competition-blue mb-2">
+                                <span data-bind="pricing.business.symbol">R</span>
+                                <span data-bind="pricing.business.amount">499.00</span>
+                            </div>
+                            <p class="text-gray-500">/ month</p>
+                        </div>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>Advanced API Access</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>Premium Analytics & Reporting</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>Dedicated Priority Support</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>Unlimited Users</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>Custom Data Integrations</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-competition-blue text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-colors" data-event="click:handleSubscription" data-implementation="Should process subscription with payment gateway">
+                            Subscribe Now
+                        </button>
+                    </div>
+
+                    <!-- Enterprise Package -->
+                    <div class="price-card bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Enterprise Package</h3>
+                            <p class="text-gray-600 mb-6">Full-scale solutions for large organizations and custom needs.</p>
+                            
+                            <div class="text-4xl font-bold text-competition-blue mb-2">
+                                <span data-bind="pricing.enterprise.symbol">R</span>
+                                <span data-bind="pricing.enterprise.amount">1200.00</span>
+                            </div>
+                            <p class="text-gray-500">/ month</p>
+                        </div>
+                        
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>All Business Package Features</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>Dedicated Account Manager</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>24/7 Phone Support</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>Enhanced Custom Integrations</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-success-green mr-3"></i>
+                                <span>On-site Training & Setup</span>
+                            </li>
+                        </ul>
+                        
+                        <button class="w-full bg-competition-blue text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-colors" data-event="click:handleSubscription" data-implementation="Should process subscription with payment gateway">
+                            Subscribe Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: ProductPricing -->
+
+        <!-- @COMPONENT: NoodleMountainSaga [SVG visualization, animated elements] -->
+        <section id="journey" class="py-20 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white relative overflow-hidden">
+            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+            
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl sm:text-5xl font-bold mb-6">
+                        The Noodle Mountain Saga
+                    </h2>
+                    <p class="text-xl text-gray-300 mb-8">
+                        From Pot to Paradise: Our Epic Journey Rendered in Full Detail
+                    </p>
+                </div>
+
+                <!-- SVG Mountain Visualization -->
+                <div class="relative">
+                    <svg viewBox="0 0 1000 600" class="w-full h-96 md:h-[500px]" preserveAspectRatio="xMidYMid meet">
+                        <defs>
+                            <!-- Sun Gradient -->
+                            <radialGradient id="sunGradient" cx="90%" cy="10%" r="20%">
+                                <stop offset="0%" stop-color="#FFD700" />
+                                <stop offset="100%" stop-color="#FF4500" />
+                            </radialGradient>
+                            
+                            <!-- Mountain Path Gradient -->
+                            <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#ffffff" />
+                                <stop offset="40%" stop-color="#add8e6" />
+                                <stop offset="80%" stop-color="#90ee90" />
+                                <stop offset="100%" stop-color="#008000" />
+                            </linearGradient>
+                            
+                            <!-- Filter for glow effect -->
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                                <feMerge> 
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        
+                        <!-- Sky Background -->
+                        <rect width="1000" height="600" fill="url(#pathGradient)" opacity="0.3"/>
+                        
+                        <!-- Sun -->
+                        <circle cx="850" cy="100" r="80" fill="url(#sunGradient)" filter="url(#glow)">
+                            <animate attributeName="r" values="80;85;80" dur="4s" repeatCount="indefinite"/>
+                        </circle>
+                        
+                        <!-- Melting Snow Path (Background) -->
+                        <path class="noodle-path" 
+                              d="M 0 300 Q 200 150 400 250 Q 600 100 800 200 Q 900 150 1000 300" 
+                              stroke="url(#pathGradient)" 
+                              stroke-width="20" 
+                              fill="none" 
+                              stroke-linecap="round" 
+                              filter="url(#glow)" />
+                        
+                        <!-- Black Noodle Path (Foreground) -->
+                        <path class="noodle-path" 
+                              d="M 0 300 Q 200 150 400 250 Q 600 100 800 200 Q 900 150 1000 300" 
+                              stroke="#000000" 
+                              stroke-width="6" 
+                              fill="none" 
+                              stroke-linecap="round" />
+                        
+                        <!-- Sheep Emojis with Animation -->
+                        <g class="floating-emoji">
+                            <text x="200" y="180" text-anchor="middle" font-size="40" fill="white">🐑</text>
+                        </g>
+                        <g class="floating-emoji" style="animation-delay: 1s;">
+                            <text x="600" y="130" text-anchor="middle" font-size="40" fill="white">🐑</text>
+                        </g>
+                        <g class="floating-emoji" style="animation-delay: 2s;">
+                            <text x="450" y="280" text-anchor="middle" font-size="40" fill="white">🐑</text>
+                        </g>
+                        <g class="floating-emoji" style="animation-delay: 0.5s;">
+                            <text x="800" y="230" text-anchor="middle" font-size="40" fill="white">🐑</text>
+                        </g>
+                    </svg>
+                </div>
+                
+                <div class="text-center mt-12">
+                    <p class="text-lg text-gray-300">
+                        Mountains, sheep, and the sunrise - witness the transformation from simple beginnings to extraordinary destinations.
+                    </p>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: NoodleMountainSaga -->
+
+        <!-- @COMPONENT: CompetitionRules [detailed requirements, submission guidelines] -->
+        <section id="rules" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+                        <i class="fas fa-gavel mr-4 text-golden-highlight"></i>
+                        Competition Rules & Guidelines
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                        Essential requirements and submission guidelines for all Master Competition Suite categories.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- General Requirements -->
+                    <div class="bg-gray-50 rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                            <i class="fas fa-list-check mr-3 text-competition-blue"></i>
+                            General Requirements
+                        </h3>
+                        
+                        <ul class="space-y-4 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-atom mt-1 mr-3 text-success-green"></i>
+                                <span><strong>Atom-Level Details:</strong> All submissions must include hidden codes, GPS coordinates, or seed elements</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-tree mt-1 mr-3 text-success-green"></i>
+                                <span><strong>Baobab Symbols:</strong> Integration of Baobab or Snotneus symbols required where specified</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-copyright mt-1 mr-3 text-success-green"></i>
+                                <span><strong>Original Work:</strong> All entries must be 100% original with full intellectual property rights</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-file-alt mt-1 mr-3 text-success-green"></i>
+                                <span><strong>Documentation:</strong> Include design rationale and concept explanation (500 words max)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-calendar mt-1 mr-3 text-success-green"></i>
+                                <span><strong>Age Requirement:</strong> Participants must be 18+ years old with valid identification</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Submission Guidelines -->
+                    <div class="bg-gray-50 rounded-2xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                            <i class="fas fa-upload mr-3 text-competition-blue"></i>
+                            Submission Guidelines
+                        </h3>
+                        
+                        <ul class="space-y-4 text-gray-700">
+                            <li class="flex items-start">
+                                <i class="fas fa-file-archive mt-1 mr-3 text-success-green"></i>
+                                <span><strong>File Format:</strong> Submit as .zip archive with organized folder structure</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-weight-hanging mt-1 mr-3 text-success-green"></i>
+                                <span><strong>File Size:</strong> Maximum 50MB per submission, minimum 1MB for visual content</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-hashtag mt-1 mr-3 text-success-green"></i>
+                                <span><strong>Entry Limit:</strong> Maximum 3 entries per participant per category</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-clock mt-1 mr-3 text-success-green"></i>
+                                <span><strong>Deadline:</strong> All submissions due by 23:59 SAST on competition closing date</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope mt-1 mr-3 text-success-green"></i>
+                                <span><strong>Contact Info:</strong> Valid email and phone number required for winner notification</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Judging Criteria -->
+                <div class="mt-16 bg-gradient-to-r from-competition-blue to-accent-blue rounded-2xl p-8 text-white">
+                    <h3 class="text-2xl font-bold mb-6 text-center">
+                        <i class="fas fa-trophy mr-3 text-golden-highlight"></i>
+                        Judging Criteria
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+                        <div>
+                            <div class="text-3xl mb-3">🎨</div>
+                            <h4 class="font-bold mb-2">Creativity</h4>
+                            <p class="text-sm opacity-90">Original concept and innovative approach</p>
+                        </div>
+                        <div>
+                            <div class="text-3xl mb-3">⚡</div>
+                            <h4 class="font-bold mb-2">Technical Skill</h4>
+                            <p class="text-sm opacity-90">Execution quality and professional finish</p>
+                        </div>
+                        <div>
+                            <div class="text-3xl mb-3">🎯</div>
+                            <h4 class="font-bold mb-2">Brief Adherence</h4>
+                            <p class="text-sm opacity-90">Meeting specific category requirements</p>
+                        </div>
+                        <div>
+                            <div class="text-3xl mb-3">💫</div>
+                            <h4 class="font-bold mb-2">Impact</h4>
+                            <p class="text-sm opacity-90">Potential for cultural significance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <a href="#competitions" class="bg-success-green text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-green-600 transition-all shadow-lg">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Start Your Submission
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: CompetitionRules -->
+    </main>
+
+    <!-- @COMPONENT: BanimalFooter [branding, navigation, copyright] -->
+    <footer class="bg-dark-header text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Brand Section -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <h3 class="text-2xl font-bold">Fruitful™</h3>
+                        <span class="text-gray-400 text-xl">|</span>
+                        <h3 class="text-xl font-semibold text-gray-300">Banimal</h3>
+                    </div>
+                    
+                    <p class="text-gray-400 mb-6 max-w-md">
+                        Master Competition Suite for Creative Excellence. Empowering designers, athletes, and innovators through atom-level design and interbrand symbology.
+                    </p>
+                    
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Competition Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Competitions</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#competitions" class="hover:text-white transition-colors">Foxed Has Mobiles™</a></li>
+                        <li><a href="#competitions" class="hover:text-white transition-colors">Olympic Threads</a></li>
+                        <li><a href="#competitions" class="hover:text-white transition-colors">Water the Seed™</a></li>
+                        <li><a href="#competitions" class="hover:text-white transition-colors">Playing with Seed™</a></li>
+                        <li><a href="#competitions" class="hover:text-white transition-colors">Crate Dance Showcase™</a></li>
+                        <li><a href="#competitions" class="hover:text-white transition-colors">FAA University Identity</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Resources -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#rules" class="hover:text-white transition-colors">Competition Rules</a></li>
+                        <li><a href="#products" class="hover:text-white transition-colors">FAA.ZONE Products</a></li>
+                        <li><a href="#journey" class="hover:text-white transition-colors">Noodle Mountain Saga</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Archive System</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Support</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-400 text-sm mb-4 md:mb-0">
+                    <p>&copy; 2025 Fruitful™ | Banimal. All rights reserved.</p>
+                    <p class="mt-1">Governance: FAA Interbrand + Yield Design Council | Archive: Vault Zero + Seed Satellite Nodes</p>
+                </div>
+                
+                <div class="flex items-center space-x-6 text-sm text-gray-400">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: BanimalFooter -->
+
+    <script>
+        (function() {
+            // Currency conversion functionality
+            const currencyRates = {
+                ZAR: { symbol: 'R', rate: 1 },
+                USD: { symbol: '$', rate: 0.055 },
+                EUR: { symbol: '€', rate: 0.051 },
+                GBP: { symbol: '£', rate: 0.043 }
+            };
+            
+            const basePrices = {
+                starter: 199.00,
+                business: 499.00,
+                enterprise: 1200.00
+            };
+            
+            function updatePrices(currency) {
+                const rate = currencyRates[currency].rate;
+                const symbol = currencyRates[currency].symbol;
+                
+                Object.keys(basePrices).forEach(package => {
+                    const price = (basePrices[package] * rate).toFixed(2);
+                    const elements = document.querySelectorAll(`[data-bind="pricing.${package}.amount"]`);
+                    const symbolElements = document.querySelectorAll(`[data-bind="pricing.${package}.symbol"]`);
+                    
+                    elements.forEach(el => el.textContent = price);
+                    symbolElements.forEach(el => el.textContent = symbol);
+                });
+            }
+            
+            // Currency selector event listener
+            document.getElementById('currency-select').addEventListener('change', function(e) {
+                updatePrices(e.target.value);
+            });
+            
+            // Ant route canvas animation
+            const canvas = document.getElementById('ant-route-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                
+                function resizeCanvas() {
+                    canvas.width = canvas.offsetWidth;
+                    canvas.height = canvas.offsetHeight;
+                }
+                
+                function drawAntRoutes() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.strokeStyle = 'rgba(0, 113, 227, 0.3)';
+                    ctx.lineWidth = 2;
+                    
+                    // Draw animated ant routes
+                    for (let i = 0; i < 5; i++) {
+                        ctx.beginPath();
+                        const startX = Math.random() * canvas.width;
+                        const startY = Math.random() * canvas.height;
+                        const endX = Math.random() * canvas.width;
+                        const endY = Math.random() * canvas.height;
+                        
+                        ctx.moveTo(startX, startY);
+                        ctx.quadraticCurveTo(
+                            canvas.width / 2, 
+                            canvas.height / 2, 
+                            endX, 
+                            endY
+                        );
+                        ctx.stroke();
+                    }
+                }
+                
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+                
+                setInterval(drawAntRoutes, 3000);
+                drawAntRoutes();
+            }
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // TODO: Implement subscription handling, payment gateway integration
+            // TODO: Implement competition submission form handling
+            // TODO: Add form validation for submission requirements
+            // TODO: Integrate with backend API for data persistence
+        })();
+    </script>
+</body>
+</html>
