@@ -17,9 +17,16 @@
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
+[![BushPortal Network](https://img.shields.io/badge/🌳_BushPortal-Network-orange?style=for-the-badge&logo=spotify)](https://github.com/heyns1000/baobab-bush-portal)
+[![VaultPulse](https://img.shields.io/badge/VaultPulse-●●●●●-brightgreen?style=for-the-badge)](https://github.com/heyns1000/baobab-bush-portal)
+[![SamFox Approved](https://img.shields.io/badge/🍦_SamFox-Approved-fbbf24?style=for-the-badge)](https://github.com/heyns1000/baobab-bush-portal)
+[![Trunk](https://img.shields.io/badge/trunk-vs111.111-orange?style=for-the-badge)](https://github.com/heyns1000/baobab-bush-portal)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![Made with ❤️](https://img.shields.io/badge/Made%20with-❤️-red.svg?style=flat-square)](https://github.com/heyns1000)
+
+> *🦊 Connected to the sovereign signal network - From the Noodle Mountains to Timbuktu 🌳*
 
 </div>
 
